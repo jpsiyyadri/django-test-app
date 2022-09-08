@@ -1,5 +1,5 @@
 pipeline {
-    agent {label "jenkins-first-agent"}
+    agent any
 
     stages {
         stage('Build') {
