@@ -1,13 +1,25 @@
 pipeline {
     agent any
-
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
     stages {
-        stage('Build') {
+        stage('Clone git code') {
+            /* steps {
+                git branch: "main",
+                credentialsId: "github-credentials",
+                url: "git@github.com:jpsiyyadri/demo-jenkins-git-pipeline.git"
+            } */
             steps {
-                echo 'Building..'
+                // Clean before build
+                cleanWs()
+                // We need to explicitly checkout from SCM here
+                checkout scm
+                echo "Building ${env.JOB_NAME}..."
             }
         }
-        stage('Test') {
+        stage('Copy code') {
             steps {
                 echo 'Testing..'
             }
