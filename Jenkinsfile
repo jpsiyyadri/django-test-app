@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com "sudo rm -r ${DESTINATION_FOLDER}/demo-mbp-django-app_main"'
+                sh 'ssh -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com "if [ -f ${DESTINATION_FOLDER}/demo-mbp-django-app_main ]; then rm -r ${DESTINATION_FOLDER}/demo-mbp-django-app_main"'
                 sh 'scp -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" -r ${WORKSPACE_DIR}/demo-mbp-django-app_main ${HOST_USER}@${HOST}:${DESTINATION_FOLDER}'
                 sh 'chmod +x ${WORKSPACE_DIR}/demo-mbp-django-app_main/scripts/deploy.sh'
                 sh 'ssh -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < ${WORKSPACE_DIR}/demo-mbp-django-app_main/scripts/deploy.sh &'
