@@ -21,8 +21,8 @@ pipeline {
         }
         stage('Copy code') {
             steps {
-                sh 'chmod +x demo-mbp-django-app_main/scripts/copy.sh'
-                sh 'demo-mbp-django-app_main/scripts/copy.sh'
+                sh 'chmod +x /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/copy.sh'
+                sh '/Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/copy.sh'
             }
         }
         stage('Deploy') {
