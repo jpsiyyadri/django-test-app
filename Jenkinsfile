@@ -4,8 +4,16 @@ pipeline {
         // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }
+    environment {
+        WORKSPACE_DIR = "/Users/jaiprakash/.jenkins/workspace"
+        AWS_SECRET_KEY = "aws_keys/my-aws-server-1-key-pair.pem"
+        HOST_USER = "ec-2"
+        HOST = "ec2-15-206-91-233.ap-south-1.compute.amazonaws.com"
+        DESTINATION_FOLDER = "/home/ec2-user/apps"
+
+    }
     stages {
-        stage('Clone git code') {
+        stage('Build') {
             /* steps {
                 git branch: "main",
                 credentialsId: "github-credentials",
@@ -21,10 +29,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com "rm -r /home/ec2-user/apps/demo-mbp-django-app_main"'
-                sh 'scp -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" -r /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com:/home/ec2-user/apps'
-                sh 'chmod +x /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/deploy.sh'
-                sh 'nohup ssh -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/deploy.sh &'
+                sh 'ssh -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com "rm -r ${DESTINATION_FOLDER}/demo-mbp-django-app_main"'
+                sh 'scp -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" -r ${WORKSPACE_DIR}/demo-mbp-django-app_main ${HOST_USER}@${HOST}:${DESTINATION_FOLDER}'
+                sh 'chmod +x ${WORKSPACE_DIR}/demo-mbp-django-app_main/scripts/deploy.sh'
+                sh 'ssh -i "${WORKSPACE_DIR}/${AWS_SECRET_KEY}" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < ${WORKSPACE_DIR}/demo-mbp-django-app_main/scripts/deploy.sh &'
             }
         }
     }
