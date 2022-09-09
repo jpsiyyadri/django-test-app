@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Copy code') {
             steps {
-                sh 'ssh -i "/Volumes/My Drive/codebases/projects/secrets/DevthJestAWS/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < Volumes/My Drive/codebases/projects/secrets/DevthJestAWS/apps/demo_app/deploy.sh'
+                sh 'ssh -i "/Volumes/My Drive/codebases/projects/secrets/DevthJestAWS/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < Volumes/My Drive/codebases/projects/secrets/DevthJestAWS/apps/demo_app/scripts/copy.sh'
             }
         }
         stage('Deploy') {
