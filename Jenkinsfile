@@ -19,17 +19,10 @@ pipeline {
                 echo "Building ${env.JOB_NAME}..."
             }
         }
-        stage('Copy code') {
-            steps {
-                sh 'ssh -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com "rm -r /home/ec2-user/apps/demo-mbp-django-app_main"'
-                sh 'chmod +x /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/copy.sh'
-                sh '/Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/copy.sh'
-            }
-        }
         stage('Deploy') {
             steps {
                 sh 'chmod +x /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/deploy.sh'
-                sh 'nohup ssh -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/deploy.sh'
+                sh 'nohup ssh -i "/Users/jaiprakash/.jenkins/workspace/aws_keys/my-aws-server-1-key-pair.pem" ec2-user@ec2-15-206-91-233.ap-south-1.compute.amazonaws.com < /Users/jaiprakash/.jenkins/workspace/demo-mbp-django-app_main/scripts/deploy.sh &'
             }
         }
     }
